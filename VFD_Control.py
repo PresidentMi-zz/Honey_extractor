@@ -37,17 +37,17 @@ class VFD_Control:
 
         vfd.serial.baudrate = 9600         # Baud
         vfd.serial.bytesize = 8
-        vfd.serial.parity   = serial.PARITY_NONE
+        vfd.serial.parity  = serial.PARITY_NONE
         vfd.serial.stopbits = 1
         vfd.serial.timeout  = 0.2
 
         # number_poles = vfd.read_register(213, 0)
         # print("Number of poles: ", number_poles)
 
-        vfd.write_register(101, 5, 0, 6)  #main frequency source 5: RS485
-        time.sleep(0.05)
-        vfd.write_register(102, 2, 0, 6)  #START signal select 2: RS485
-        time.sleep(0.05)
+        # vfd.write_register(101, 5, 0, 6)  #main frequency source 5: RS485
+        # time.sleep(0.05)
+        # vfd.write_register(102, 2, 0, 6)  #START signal select 2: RS485
+        # time.sleep(0.05)
         vfd.write_register(104, 1, 0, 6)  #Allow reverse rotation
         time.sleep(0.05)
 
@@ -56,7 +56,7 @@ class VFD_Control:
 
         vfd.write_register(700, 1, 0, 6)  #Boudrate 1:9600
         time.sleep(0.05)
-        vfd.write_register(701, 2, 0, 6)  #PARTY_NONE
+        vfd.write_register(701, 3, 0, 6)  #8-N-1
         time.sleep(0.05)
 
         return vfd
@@ -80,6 +80,7 @@ class VFD_Control:
 
         elif direction == 'R':
             self.vfd.write_register(8192, 7, 0, 6)  # ADRESS, VALUE, DECIMAL PLACES, COMMAND 6 OR16
+            print("Motor Stop")
 
     def stop(self):
         # STOP
@@ -89,7 +90,7 @@ class VFD_Control:
         self.vfd.write_register(119, 1, 0, 6)
 
     def read_outvoltage(self):
-        out_voltage = vfd.read_register(5, 1)  # Registernumber, number of decimals
+        out_voltage = self.vfd.read_register(5, 1)  # Registernumber, number of decimals
         print(out_voltage)
 
 
