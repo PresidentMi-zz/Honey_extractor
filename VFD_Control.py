@@ -23,7 +23,7 @@ import time
 
 
 class VFD_Control:
-    def __init__(self,PORT,ADDRESS):
+    def __init__(self,PORT,ADDRESS = 1):
         self.vfd=self.setup(PORT,ADDRESS)
 
     def setup(self,PORT,ADDRESS):
@@ -48,6 +48,7 @@ class VFD_Control:
         # time.sleep(0.05)
         # vfd.write_register(102, 2, 0, 6)  #START signal select 2: RS485
         # time.sleep(0.05)
+
         vfd.write_register(104, 1, 0, 6)  #Allow reverse rotation
         time.sleep(0.05)
 
@@ -66,11 +67,11 @@ class VFD_Control:
         freq_for_vfd = 10 * round(float(freq), 1)
         self.vfd.write_register(8193, freq_for_vfd, 0, 6)
 
-    def run(self,direction):    #direction F-Forward, R-reverse
+    def run(self,go_forward = True):    #direction F-Forward, R-reverse
 
-        if direction == 'F':
+        if go_forward:
              self.vfd.write_register(8192, 10, 0, 6)
-        elif direction == 'R':
+        else:
              self.vfd.write_register(8192, 6, 0, 6)  # ADRESS, VALUE, DECIMAL PLACES, COMMAND 6 OR16
 
     def jog(self, direction):
@@ -92,7 +93,3 @@ class VFD_Control:
     def read_outvoltage(self):
         out_voltage = self.vfd.read_register(5, 1)  # Registernumber, number of decimals
         print(out_voltage)
-
-
-
-
